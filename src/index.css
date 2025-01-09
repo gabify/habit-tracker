@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --dark: #2C3A47;
+  --light: #f1f2f6; 
+  --primary: #079992;
+  --secondary: #38ada9;
+  --compliment: #b8e994;
+}
+
+body{
+  background-color: var(--light);
+}
+.content{
+  @apply md:grid md:grid-cols-3 gap-4
+}
+
+.habit-card{
+  @apply mt-7 bg-gray-50 px-3 py-6 rounded-xl shadow-md
+}
+
+.habit-item{
+  @apply mb-3 py-2 px-4 cursor-pointer rounded-md shadow-sm;
+  transition: 0.3s;
+}
+
+.habit-item:hover{
+  background-color: var(--dark);
+  border-radius: 9px;
+  color: var(--light);
+}
+
+.card-title{
+  color: var(--primary);
+  @apply text-center text-lg tracking-wide mb-3 font-semibold
+}
+
+.form-group{
+  @apply flex flex-col px-3 py-2
+}
+
+.form-label{
+  @apply text-sm font-medium tracking-wide mb-1
+}
+
+.form-control{
+  box-sizing: border-box;
+  transition: 0.2s;
+  outline: none;
+  @apply border-2 rounded-md py-2 px-2 border-gray-400 text-gray-700 text-sm
+}
+
+.form-control:focus{
+  border: 2px solid var(--primary);
+}
+
+.btn{
+  background-color: var(--primary);
+  @apply px-3 py-2 rounded-md text-white
+}
