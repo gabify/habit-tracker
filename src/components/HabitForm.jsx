@@ -14,7 +14,8 @@ const HabitForm = () => {
         const response = await fetch('http://localhost:7979/api/v1/habit/new', {
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${user.token}`
             },
             body: JSON.stringify(habit)
         })

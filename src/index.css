@@ -14,8 +14,13 @@
 body{
   background-color: var(--light);
 }
+
+.header{
+  @apply bg-gray-200 px-10 py-4 flex justify-between items-baseline shadow-sm
+}
+
 .content{
-  @apply md:grid md:grid-cols-3 gap-4
+  @apply px-10 py-5 md:grid md:grid-cols-3 gap-4
 }
 
 .habit-card{
@@ -60,6 +65,18 @@ body{
 .btn{
   background-color: var(--primary);
   @apply px-3 py-2 rounded-md text-white
+}
+
+.btn-outline{
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  transition: 0.3s;
+  @apply px-2 py-1 rounded-md bg-gray-200 text-sm
+}
+
+.btn-outline:hover{
+  background-color: var(--primary);
+  @apply px-2 py-1 rounded-md text-white text-sm
 }
 
 .link{

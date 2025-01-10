@@ -13,7 +13,11 @@ const Home = () => {
     useEffect(() =>{
         const getData = async() =>{
         setIsLoading(true)
-        const response = await fetch(`http://localhost:7979/api/v1/habit/${user._id}`)
+        const response = await fetch(`http://localhost:7979/api/v1/habit/${user._id}`,{
+            headers: {
+                 'Authorization': `Bearer ${user.token}`
+            }
+        })
         const json = await response.json()
 
         if(response.ok){
@@ -33,7 +37,7 @@ const Home = () => {
                 <Habits habits={habits}/>
                 <HabitForm />
             </div>
-            <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By Gabify</p>
+            <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By <a href="https://github.com/gabify/" target="_blank" className="link">Gabify</a></p>
         </section>
     )
 }

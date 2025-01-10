@@ -29,6 +29,7 @@ const Login = () => {
 
         if(response.ok){
             dispatch({type: 'LOGIN', payload: result})
+            localStorage.setItem('user', JSON.stringify(result))
             setEmail('')
             setPassword('')
             setIsShown(false)
@@ -87,7 +88,7 @@ const Login = () => {
                     </div>
                 </form>
             </div>
-            <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By Gabify</p>
+            <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By <a href="https://github.com/gabify/" target="_blank" className="link">Gabify</a></p>
         </section>
      );
 }

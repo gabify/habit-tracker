@@ -8,7 +8,7 @@ function App() {
   const {user} = useAuthContext()
 
   return (
-    <main className="px-10 py-5">
+    <main>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={user ? <Home /> : <Navigate to='/login' />} />
