@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { useAuthContext } from "../hook/useAuthContext";
 
 const HabitForm = () => {
+    const {user} = useAuthContext()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
 
-        const habit = {name, description}
+        const habit = {name, description, userId: user._id}
 
         const response = await fetch('http://localhost:7979/api/v1/habit/new', {
             method: 'POST',
@@ -35,7 +37,7 @@ const HabitForm = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="name" className="form-label">
-                        Habit Name
+                        Name
                     </label>
                     <input 
                         type="text" 
@@ -48,7 +50,7 @@ const HabitForm = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="name" className="form-label">
-                    Habit Description
+                    Description
                     </label>
                     <textarea 
                         type="text" 
