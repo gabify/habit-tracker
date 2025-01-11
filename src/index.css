@@ -67,6 +67,11 @@ body{
   @apply px-3 py-2 rounded-md text-white
 }
 
+.btn-disabled{
+  background-color: var(--secondary);
+  @apply px-3 py-2 rounded-md text-white
+}
+
 .btn-outline{
   border: 2px solid var(--primary);
   color: var(--primary);

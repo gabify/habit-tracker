@@ -2,16 +2,18 @@ import { useState } from "react";
 import {Link} from 'react-router-dom'
 import Header from "../components/Header";
 import { useAuthContext } from "../hook/useAuthContext";
+import Spinner from "../components/Spinner";
 
 const Login = () => {
     const {dispatch} = useAuthContext()
+    const [isLoading, setIsLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isShown, setIsShown] = useState(false)
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
-
+        setIsLoading(true)
         const user = {email, password}
         const response = await fetch(`${import.meta.env.VITE_API_LINK}/login`, {
             method: "POST",
@@ -84,7 +86,15 @@ const Login = () => {
                     </p>
 
                     <div className="flex flex-col items-center ">
-                        <button type="submit" className="btn">Log in</button>
+                        <button type="submit" className={isLoading ? 'btn-disabled': 'btn'} disabled={isLoading}>
+                            {isLoading ? (
+                                <div className="flex gap-1">
+                                    <Spinner/>
+                                    <p>Loading...</p>
+                                </div>
+                            ) : 'Log in'}
+                           
+                        </button>
                     </div>
                 </form>
             </div>

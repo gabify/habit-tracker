@@ -34,7 +34,7 @@ const Home = () => {
         <section className="home">
             <Header />
             <div className="content">
-                <Habits habits={habits}/>
+                <Habits habits={habits} isLoading={isLoading}/>
                 <HabitForm />
             </div>
             <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By <a href="https://github.com/gabify/" target="_blank" className="link">Gabify</a></p>

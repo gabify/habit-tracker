@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useAuthContext } from "../hook/useAuthContext";
+import Spinner from "./Spinner";
 
 const HabitForm = () => {
     const {user} = useAuthContext()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
-
+        setIsLoading(true)
         const habit = {name, description, userId: user._id}
 
         const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/new`, {
@@ -23,10 +25,12 @@ const HabitForm = () => {
         const json = await response.json()
 
         if(!response.ok){
+            setIsLoading(false)
             console.log(json.error)
         }
 
         if(response.ok){
+            setIsLoading(false)
             console.log(json)
         }
     }
@@ -63,7 +67,15 @@ const HabitForm = () => {
                     ></textarea>
                 </div>
                 <div className="flex flex-col items-center">
-                    <button type="submit" className="btn mx-auto my-3">Add Habit</button>
+                    <button type="submit" className={isLoading ? 'btn-disabled': 'btn'} disabled={isLoading}>
+                        {isLoading ? (
+                            <div className="flex gap-1">
+                                <Spinner/>
+                                <p>Loading...</p>
+                            </div>
+                        ) : 'Add Habit'}
+                        
+                    </button>
                 </div>
             </form>
       </div>
