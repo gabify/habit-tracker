@@ -32,6 +32,8 @@ const HabitForm = () => {
         }
 
         if(response.ok){
+            setName('')
+            setDescription('')
             dispatch({type: 'CREATE_HABIT', payload: json})
             setIsLoading(false)
         }
