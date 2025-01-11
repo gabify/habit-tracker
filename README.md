@@ -14,8 +14,7 @@ A simple and intuitive web application designed to help users build and maintain
   Motivates users by highlighting streaks and offering virtual rewards for achieving milestones.
   
 ## How to use the App?
-<!-- Just visit [https://weatheria-v02.vercel.app](https://weatheria-v02.vercel.app/) -->
-Still not deployed as of now
+Just visit [https://habit-tracker-lime-chi.vercel.app/](https://habit-tracker-lime-chi.vercel.app/)
 
 ## How to install the App locally?
 ### Prerequisites
