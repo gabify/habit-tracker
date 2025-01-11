@@ -4,26 +4,27 @@ import HabitForm from "../components/HabitForm"
 import Habits from "../components/Habits"
 import Header from "../components/Header"
 import { useAuthContext } from "../hook/useAuthContext"
+import {useHabitContext} from '../hook/useHabitContext'
 
 const Home = () => {
     const {user} = useAuthContext()
-    const [habits, setHabits] = useState(null)
+    const {habits, dispatch} = useHabitContext()
     const [isLoading, setIsLoading] = useState(null)
 
     useEffect(() =>{
         const getData = async() =>{
-        setIsLoading(true)
-        const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/${user._id}`,{
-            headers: {
-                 'Authorization': `Bearer ${user.token}`
-            }
-        })
-        const json = await response.json()
+            setIsLoading(true)
+            const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/${user._id}`,{
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            const json = await response.json()
 
-        if(response.ok){
-            setIsLoading(false)
-            setHabits(json)
-        }
+            if(response.ok){
+                dispatch({type: 'SET_HABIT', payload: json})
+                setIsLoading(false)
+            }
         }
 
         getData()

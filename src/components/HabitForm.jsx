@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useAuthContext } from "../hook/useAuthContext";
+import {useHabitContext} from '../hook/useHabitContext'
 import Spinner from "./Spinner";
 
 const HabitForm = () => {
     const {user} = useAuthContext()
+    const {dispatch} = useHabitContext()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -30,8 +32,8 @@ const HabitForm = () => {
         }
 
         if(response.ok){
+            dispatch({type: 'CREATE_HABIT', payload: json})
             setIsLoading(false)
-            console.log(json)
         }
     }
     
