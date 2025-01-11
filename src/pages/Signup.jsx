@@ -14,7 +14,7 @@ const Signup = () => {
         e.preventDefault()
 
         const user = {email, password, name}
-        const response = await fetch('http://localhost:7979/api/v1/new', {
+        const response = await fetch(`${import.meta.env.VITE_API_LINK}/new`, {
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"

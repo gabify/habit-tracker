@@ -11,7 +11,7 @@ const HabitForm = () => {
 
         const habit = {name, description, userId: user._id}
 
-        const response = await fetch('http://localhost:7979/api/v1/habit/new', {
+        const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/new`, {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json',
