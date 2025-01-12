@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import { useAuthContext } from "../hook/useAuthContext";
 import Spinner from "../components/Spinner";
+import ErrorMessage from '../components/ErrorMessage'
 
 const Signup = () => {
     const {dispatch} = useAuthContext()
@@ -11,35 +12,49 @@ const Signup = () => {
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
     const [isShown, setIsShown] = useState(false)
+    const [error, setError] = useState(null)
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
         setIsLoading(true)
-        const user = {email, password, name}
-        const response = await fetch(`${import.meta.env.VITE_API_LINK}/new`, {
-            method: "POST",
-            headers: {
-                "Content-Type" : "application/json"
-            },
-            body: JSON.stringify(user)
-        })
+        setError(null)
 
-        const result = await response.json()
+        if(email !== '' && password !== '' && name !== ''){
 
-        if(!response.ok){
+            const user = {email, password, name}
+            try{
+                const response = await fetch(`${import.meta.env.VITE_API_LINK}/new`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type" : "application/json"
+                    },
+                    body: JSON.stringify(user)
+                })
+
+                const result = await response.json()
+
+                if(!response.ok){
+                    setIsLoading(false)
+                    setError(result.error)
+                }
+
+                if(response.ok){
+                    dispatch({type: 'LOGIN', payload: result})
+                    localStorage.setItem('user', JSON.stringify(result))
+                    setName('')
+                    setEmail('')
+                    setPassword('')
+                    setIsShown(false)
+                    setIsLoading(false)
+                    console.log(result)
+                }
+            }catch(err){
+                setError(err.message)
+                setIsLoading(false)
+            }
+        }else{
+            setError('All fields are required')
             setIsLoading(false)
-            console.log(result.error)
-        }
-
-        if(response.ok){
-            dispatch({type: 'LOGIN', payload: result})
-            localStorage.setItem('user', JSON.stringify(result))
-            setName('')
-            setEmail('')
-            setPassword('')
-            setIsShown(false)
-            setIsLoading(false)
-            console.log(result)
         }
     }
 
@@ -96,8 +111,8 @@ const Signup = () => {
                     </div>
 
                     <p className="text-sm px-3 mb-4 font-light">
-                        Don't have an account yet? 
-                        <Link to='/login' className="ms-1 link">Click here</Link>
+                        Already have an account? Log in 
+                        <Link to='/login' className="ms-1 link">here</Link>
                     </p>
 
                     <div className="flex flex-col items-center ">
@@ -112,6 +127,9 @@ const Signup = () => {
                         </button>
                     </div>
                 </form>
+                {error && (
+                    <ErrorMessage error={error}/>
+                )}
             </div>
             <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By <a href="https://github.com/gabify/" target="_blank" className="link">Gabify</a></p>
         </section>

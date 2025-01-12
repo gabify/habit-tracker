@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuthContext } from "../hook/useAuthContext";
 import {useHabitContext} from '../hook/useHabitContext'
 import Spinner from "./Spinner";
+import ErrorMessage from './ErrorMessage'
 
 const HabitForm = () => {
     const {user} = useAuthContext()
@@ -9,32 +10,46 @@ const HabitForm = () => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
         setIsLoading(true)
-        const habit = {name, description, userId: user._id}
+        setError(null)
 
-        const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/new`, {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': `Bearer ${user.token}`
-            },
-            body: JSON.stringify(habit)
-        })
+        if(name !== '' && description !== ''){
+            const habit = {name, description, userId: user._id}
 
-        const json = await response.json()
+            try{
+                const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/new`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type' : 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+                    },
+                    body: JSON.stringify(habit)
+                })
 
-        if(!response.ok){
-            setIsLoading(false)
-            console.log(json.error)
-        }
+                const json = await response.json()
 
-        if(response.ok){
-            setName('')
-            setDescription('')
-            dispatch({type: 'CREATE_HABIT', payload: json})
+                if(!response.ok){
+                    console.log(json.error)
+                    setError(json.error)
+                    setIsLoading(false)
+                }
+
+                if(response.ok){
+                    setName('')
+                    setDescription('')
+                    dispatch({type: 'CREATE_HABIT', payload: json})
+                    setIsLoading(false)
+                }
+            }catch(err){
+                setError(err.message)
+                setIsLoading(false)
+            }
+        }else{
+            setError('All fields are required!')
             setIsLoading(false)
         }
     }
@@ -54,6 +69,7 @@ const HabitForm = () => {
                         id="name" 
                         className="form-control"
                         onChange={(e) =>setName(e.target.value)}
+                        value={name}
                         placeholder="What is your habit called?"
                     />
                 </div>
@@ -67,6 +83,7 @@ const HabitForm = () => {
                         id="name" 
                         className="form-control"
                         placeholder="Describe your habit"
+                        value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     ></textarea>
                 </div>
@@ -82,6 +99,9 @@ const HabitForm = () => {
                     </button>
                 </div>
             </form>
+            {error && (
+                <ErrorMessage error={error}/>
+            )}
       </div>
      );
 }

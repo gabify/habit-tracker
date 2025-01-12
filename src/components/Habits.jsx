@@ -1,7 +1,8 @@
 import HabitCard from "./HabitCard";
 import Spinner from './Spinner'
+import ErrorMessage from './ErrorMessage'
 
-const Habits = ({habits, isLoading}) => {
+const Habits = ({habits, isLoading, error}) => {
     return ( 
         <div className="habit-card md:col-span-2">
             <h2 className="card-title">My Habits</h2>
@@ -12,6 +13,9 @@ const Habits = ({habits, isLoading}) => {
             )}
             {habits && habits.map((habit) =>
                 <HabitCard habit={habit} key={habit._id} />
+            )}
+            {error && (
+                <ErrorMessage error={error}/>
             )}
         </div>
      );

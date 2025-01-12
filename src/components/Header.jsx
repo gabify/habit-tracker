@@ -4,7 +4,8 @@ const Header = () => {
     const {user, dispatch} = useAuthContext()
 
     const handleClick = () =>{
-        dispatch({type: 'LOGOUT'}) 
+        dispatch({type: 'LOGOUT'})
+        localStorage.removeItem("user") 
     }
 
     return (
@@ -18,7 +19,7 @@ const Header = () => {
                     </div>
                 </header>
             ): (
-            <header className="mt-8 text-center">
+            <header className="mt-7 text-center">
                 <h1 className="text-2xl font-semibold">Bug</h1>
                 <p className="font-light tracking-wide">Habit Tracker</p>
             </header>

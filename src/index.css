@@ -24,7 +24,7 @@ body{
 }
 
 .habit-card{
-  @apply mt-7 bg-gray-50 px-3 py-6 rounded-xl shadow-md
+  @apply mt-7 mx-3 bg-gray-50 px-3 py-6 rounded-xl shadow-md
 }
 
 .habit-item{
