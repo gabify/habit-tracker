@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuthContext } from "../hook/useAuthContext";
 import {useHabitContext} from '../hook/useHabitContext'
 import Spinner from "./Spinner";
@@ -48,41 +48,45 @@ const HabitForm = () => {
         setIsLoading(true)
         setError(null)
 
-        if(name !== '' && description !== ''){
+        try{
+            if(name === '' || description === ''){
+                throw Error('All fields are required!')
+            }
+
+            if(frequency.length === 0){
+                throw Error('Please set your weekly goal')
+            }
+
 
             const goals = frequency.map(day => daysOfTheWeek[day])
             const habit = {name, description, goals, userId: user._id}
 
-            try{
-                const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/new`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type' : 'application/json',
-                        'Authorization': `Bearer ${user.token}`
-                    },
-                    body: JSON.stringify(habit)
-                })
+            const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/new`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                body: JSON.stringify(habit)
+            })
 
-                const json = await response.json()
+            const json = await response.json()
 
-                if(!response.ok){
-                    console.log(json.error)
-                    setError(json.error)
-                    setIsLoading(false)
-                }
-
-                if(response.ok){
-                    setName('')
-                    setDescription('')
-                    dispatch({type: 'CREATE_HABIT', payload: json})
-                    setIsLoading(false)
-                }
-            }catch(err){
-                setError(err.message)
+            if(!response.ok){
+                console.log(json.error)
+                setError(json.error)
                 setIsLoading(false)
             }
-        }else{
-            setError('All fields are required!')
+
+            if(response.ok){
+                setName('')
+                setDescription('')
+                setFrequency([])
+                dispatch({type: 'CREATE_HABIT', payload: json})
+                setIsLoading(false)
+            }
+        }catch(err){
+            setError(err.message)
             setIsLoading(false)
         }
     }    
@@ -127,6 +131,7 @@ const HabitForm = () => {
                             <DayCard 
                                 day={day} 
                                 key={day}
+                                frequency={frequency}
                                 addFrequency={addFrequency}
                                 removeFrequency={removeFrequency}
                             />

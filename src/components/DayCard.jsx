@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const DayCard = ({day, addFrequency, removeFrequency}) => {
+const DayCard = ({day, frequency, addFrequency, removeFrequency}) => {
     const [isClicked, setIsClicked] = useState(false)
 
     const handleClick = (day) =>{
@@ -12,6 +12,14 @@ const DayCard = ({day, addFrequency, removeFrequency}) => {
             addFrequency(day)
         }
     }
+
+    useEffect(() =>{
+        if(frequency.length === 0){
+            setIsClicked(false)
+        }
+
+        console.log(frequency)
+    }, [frequency])
 
     return ( 
         <div className={isClicked ? "day-card clicked": "day-card"} onClick={() => handleClick(day)}>
