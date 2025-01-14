@@ -4,7 +4,7 @@ import ErrorMessage from './ErrorMessage'
 
 const Habits = ({habits, isLoading, error}) => {
     return ( 
-        <div className="habit-card md:col-span-2">
+        <div className="habit-card lg:col-span-2 row-auto">
             <h2 className="card-title">My Habits</h2>
             {isLoading && (
                 <div className="flex flex-col items-center">

@@ -46,7 +46,7 @@ const Home = () => {
     return (
         <section className="home">
             <Header />
-            <div className="">
+            <div className="xl:grid grid-cols-3 grid-rows-1">
                 <Habits habits={habits} isLoading={isLoading} error={error}/>
                 <HabitForm />
             </div>

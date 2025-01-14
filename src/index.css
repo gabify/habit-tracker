@@ -94,3 +94,15 @@ body{
   border-bottom: 2px solid var(--secondary);
   @apply font-medium
 }
+
+.day-card{
+  background-color: var(--light);
+  transition: 0.3s;
+  @apply shadow-md px-3 py-4 rounded-md font-medium text-sm cursor-pointer
+}
+
+.clicked{
+  background-color: var(--primary);
+  color: var(--light);
+  transition: 0.3s;
+}
