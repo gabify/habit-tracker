@@ -11,26 +11,36 @@ const Home = () => {
     const {habits, dispatch} = useHabitContext()
     const [isLoading, setIsLoading] = useState(null)
     const [error, setError] = useState(null)
+    const [page, setPage] = useState(0)
+
+    const loadHabit = () =>{
+        setPage(page + 1)
+    }
 
     useEffect(() =>{
         const getData = async() =>{
             setIsLoading(true)
             setError(null)
             try{
-                const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/${user._id}`,{
+                const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/${user._id}?p=${page}`,{
                     headers: {
                         'Authorization': `Bearer ${user.token}`
                     }
                 })
                 const json = await response.json()
-    
+                console.log(json)
+
                 if(!response.ok){
                     setIsLoading(false)
                     setError(json.error)
                 }
     
                 if(response.ok){
-                    dispatch({type: 'SET_HABIT', payload: json})
+                    if(!habits){
+                        dispatch({type: 'SET_HABIT', payload: json.habits})
+                    }else{
+                        dispatch({type: 'SET_HABIT', payload: habits.concat(json.habits)})
+                    }
                     setIsLoading(false)
                 }
             }catch(err){
@@ -40,14 +50,18 @@ const Home = () => {
         }
 
         getData()
-    }, [])
+    }, [page])
 
 
     return (
         <section className="home">
             <Header />
             <div className="xl:grid grid-cols-3 grid-rows-1">
-                <Habits habits={habits} isLoading={isLoading} error={error}/>
+                <Habits 
+                    habits={habits} 
+                    isLoading={isLoading} 
+                    error={error} 
+                    loadHabit={loadHabit}/>
                 <HabitForm />
             </div>
             <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By <a href="https://github.com/gabify/" target="_blank" className="link">Gabify</a></p>

@@ -17,8 +17,6 @@ const DayCard = ({day, frequency, addFrequency, removeFrequency}) => {
         if(frequency.length === 0){
             setIsClicked(false)
         }
-
-        console.log(frequency)
     }, [frequency])
 
     return ( 
