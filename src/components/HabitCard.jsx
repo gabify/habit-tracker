@@ -3,7 +3,21 @@ import { useState } from "react"
 const HabitCard = ({habit}) => {
     const [isChecked, setIschecked] = useState(false)
     const daysOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    const goals = habit.goals.toSorted().map(day => daysOftheWeek[day -1])
+    let goals = habit.goals.toSorted().map(day => daysOftheWeek[day -1])
+
+    console.log(goals)
+
+    if(goals.length === 7){
+        goals = ["Everyday"]
+    }
+
+    if(goals[0] === "Sun" && goals[1] === "Sat"){
+        goals = ["Every weekend"]
+    }
+
+    if(goals.includes("Sun") && goals.includes("Sat")){
+        goals = ["Every weekdays"]
+    }
 
     const handleCheck = () =>{
         if(isChecked){
@@ -14,7 +28,7 @@ const HabitCard = ({habit}) => {
     }
     return ( 
         <div className="habit-item relative">
-            <div className="absolute top-0 right-0 me-0.5 mt-0.5">
+            <div className="absolute top-0 right-0 me-0.5 mt-0.5 hidden sm:block">
                 {goals.map((goal) =>
                     <span class="badge">{goal}</span>
                 )}

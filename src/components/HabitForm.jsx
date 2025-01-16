@@ -126,7 +126,7 @@ const HabitForm = () => {
                 <div className="form-group mb-3">
                     <label htmlFor="weeklyGoal" className="form-label">Set your weekly goal</label>
                     <small className="font-light tracking-wide mb-3">How frequent you want to do this habit?</small>
-                    <div className="flex gap-2 justify-center">
+                    <div className="sm:grid grid-cols-7 gap-2 justify-center">
                         {Object.keys(daysOfTheWeek).map((day) =>
                             <DayCard 
                                 day={day} 

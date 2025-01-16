@@ -98,7 +98,7 @@ body{
 .day-card{
   background-color: var(--light);
   transition: 0.3s;
-  @apply shadow-md px-3 py-4 rounded-md font-medium text-sm cursor-pointer
+  @apply shadow-md px-3 py-4 mb-2 rounded-md font-medium text-sm text-center cursor-pointer sm:col-span-1 md:max-w-28
 }
 
 .clicked{
