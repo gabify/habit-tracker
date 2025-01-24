@@ -131,7 +131,7 @@ const Signup = () => {
                     <ErrorMessage error={error}/>
                 )}
             </div>
-            <p className="text-xs mt-3 text-center text-gray-600">Designed and Developd By <a href="https://github.com/gabify/" target="_blank" className="link">Gabify</a></p>
+            <p className="text-xs my-3 text-center text-gray-600">Designed and Developd By <a href="https://github.com/gabify/" target="_blank" className="link">Gabify</a></p>
         </section>
      );
 }
