@@ -5,9 +5,11 @@ import Habits from "../components/Habits"
 import Header from "../components/Header"
 import { useAuthContext } from "../hook/useAuthContext"
 import {useHabitContext} from '../hook/useHabitContext'
+import { useLogout } from "../hook/useLogout"
 
 const Home = () => {
     const {user} = useAuthContext()
+    const {logout} = useLogout()
     const {habits, dispatch} = useHabitContext()
     const [isLoading, setIsLoading] = useState(null)
     const [error, setError] = useState(null)
@@ -28,7 +30,10 @@ const Home = () => {
                     }
                 })
                 const json = await response.json()
-                console.log(json)
+
+                if(response.status === 401){
+                    logout()
+                }
 
                 if(!response.ok){
                     setIsLoading(false)

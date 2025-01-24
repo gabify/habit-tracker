@@ -1,49 +1,24 @@
 import { useState } from "react";
 import {Link} from 'react-router-dom'
 import Header from "../components/Header";
-import { useAuthContext } from "../hook/useAuthContext";
+import { useLogin } from "../hook/useLogin";
 import Spinner from "../components/Spinner";
 import ErrorMessage from '../components/ErrorMessage'
 
 const Login = () => {
-    const {dispatch} = useAuthContext()
-    const [isLoading, setIsLoading] = useState(false)
+    const [login, isLoading, error] = useLogin()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isShown, setIsShown] = useState(false)
-    const [error, setError] = useState(null)
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
-        setIsLoading(true)
-        setError(null)
         const user = {email, password}
-        try{
-            const response = await fetch(`${import.meta.env.VITE_API_LINK}/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type" : "application/json"
-                },
-                body: JSON.stringify(user)
-            })
 
-            const result = await response.json()
+        await login(user)
 
-            if(!response.ok){
-                setIsLoading(false)
-                setError(result.error)
-            }
-
-            if(response.ok){
-                dispatch({type: 'LOGIN', payload: result})
-                localStorage.setItem('user', JSON.stringify(result))
-                setEmail('')
-                setPassword('')
-                setIsShown(false)
-            }
-        }catch(err){
-            setIsLoading(false)
-            setError(err.message)
+        if(isLoading && !error){
+            setIsShown(false)
         }
     }
 
