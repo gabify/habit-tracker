@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const HabitCard = ({habit}) => {
+const HabitCard = ({habit, isHidden, markAsFinished, unmarkedAsFinished}) => {
     const [isChecked, setIschecked] = useState(false)
     const daysOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     let goals = habit.goals.toSorted().map(day => daysOftheWeek[day -1])
@@ -19,8 +19,10 @@ const HabitCard = ({habit}) => {
 
     const handleCheck = () =>{
         if(isChecked){
+            unmarkedAsFinished(habit._id)
             setIschecked(false)
         }else{
+            markAsFinished(habit._id)
             setIschecked(true)
         }
     }
@@ -37,6 +39,7 @@ const HabitCard = ({habit}) => {
                     name="isDone" 
                     id="isDone" 
                     className="me-1"
+                    hidden={isHidden}
                     onChange={handleCheck}
                 />
                 <div>
