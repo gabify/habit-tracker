@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const HabitCard = ({habit, isHidden, markAsFinished, unmarkedAsFinished}) => {
     const [isChecked, setIschecked] = useState(false)
@@ -26,6 +26,13 @@ const HabitCard = ({habit, isHidden, markAsFinished, unmarkedAsFinished}) => {
             setIschecked(true)
         }
     }
+
+    useEffect(() =>{
+        if(!isHidden){
+            setIschecked(false)
+        }
+    }, [isHidden])
+
     return ( 
         <div className="habit-item relative">
             <div className="absolute top-0 right-0 me-0.5 mt-0.5 hidden sm:block">
@@ -39,11 +46,12 @@ const HabitCard = ({habit, isHidden, markAsFinished, unmarkedAsFinished}) => {
                     name="isDone" 
                     id="isDone" 
                     className="me-1"
+                    checked={isChecked}
                     hidden={isHidden}
                     onChange={handleCheck}
                 />
                 <div>
-                    <h3 className={`font-medium mb-0.5 ${isChecked && 'line-through'}`}>{habit.name}</h3>
+                    <h3 className="font-medium mb-0.5">{habit.name}</h3>
                     <small className="font-light tracking-wide">{habit.description}</small>
                 </div>
             </div>

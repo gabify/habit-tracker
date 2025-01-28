@@ -4,14 +4,14 @@ import {useHabitContext} from '../hook/useHabitContext'
 import Spinner from "./Spinner";
 import ErrorMessage from './ErrorMessage'
 import DayCard from "./DayCard";
+import { usePost } from "../hook/usePost";
 
 const HabitForm = () => {
     const {user} = useAuthContext()
     const {dispatch} = useHabitContext()
+    const {send, isLoading, error} = usePost()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(null)
     const [frequency, setFrequency] = useState([])
 
     //days of the week
@@ -45,49 +45,25 @@ const HabitForm = () => {
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
-        setIsLoading(true)
-        setError(null)
 
-        try{
-            if(name === '' || description === ''){
-                throw Error('All fields are required!')
-            }
+        if(name === '' || description === ''){
+            throw Error('All fields are required!')
+        }
 
-            if(frequency.length === 0){
-                throw Error('Please set your weekly goal')
-            }
+        if(frequency.length === 0){
+            throw Error('Please set your weekly goal')
+        }
 
 
-            const goals = frequency.map(day => daysOfTheWeek[day])
-            const habit = {name, description, goals, userId: user._id}
+        const goals = frequency.map(day => daysOfTheWeek[day])
+        const habit = {name, description, goals, userId: user._id}
 
-            const response = await fetch(`${import.meta.env.VITE_API_LINK}/habit/new`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/json',
-                    'Authorization': `Bearer ${user.token}`
-                },
-                body: JSON.stringify(habit)
-            })
-
-            const json = await response.json()
-
-            if(!response.ok){
-                console.log(json.error)
-                setError(json.error)
-                setIsLoading(false)
-            }
-
-            if(response.ok){
-                setName('')
-                setDescription('')
-                setFrequency([])
-                dispatch({type: 'CREATE_HABIT', payload: json})
-                setIsLoading(false)
-            }
-        }catch(err){
-            setError(err.message)
-            setIsLoading(false)
+        const result = await send(habit, '/habit/new')
+        if(result){
+            setName('')
+            setDescription('')
+            setFrequency([])
+            dispatch({type: 'CREATE_HABIT', payload: result})
         }
     }    
     
