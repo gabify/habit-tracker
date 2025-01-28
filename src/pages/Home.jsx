@@ -41,6 +41,7 @@ const Home = () => {
                 }
     
                 if(response.ok){
+                    console.log(json)
                     if(!habits){
                         dispatch({type: 'SET_HABIT', payload: json.habits})
                     }else{
