@@ -60,64 +60,72 @@ const Habits = ({habits, isLoading, error, loadHabit}) => {
     return ( 
         <div className="habit-card lg:col-span-2 row-auto">
             <h2 className="card-title">My Habits</h2>
-            <div className="flex justify-end mb-3">
-                <button 
-                    className="btn me-2" 
-                    onClick={handleClick}
-                    disabled={postLoading}
-                    >
-                    {isHidden ? 'Mark Habit' : 'Unmark Habit'}
-                </button>
-                <button 
-                    className={isEmpty ? "btn-disabled" : "btn"} 
-                    hidden={isHidden} 
-                    disabled={isEmpty || postLoading}
-                    onClick={handleDone}
-                >
-                    {postLoading ? (
-                        <div className="flex gap-1">
+            {habits && habits.length > 0 ? (
+                <div>
+                    <div className="flex justify-end mb-3">
+                        <button 
+                            className="btn me-2" 
+                            onClick={handleClick}
+                            disabled={postLoading}
+                            >
+                            {isHidden ? 'Mark Habit' : 'Unmark Habit'}
+                        </button>
+                        <button 
+                            className={isEmpty ? "btn-disabled" : "btn"} 
+                            hidden={isHidden} 
+                            disabled={isEmpty || postLoading}
+                            onClick={handleDone}
+                        >
+                            {postLoading ? (
+                                <div className="flex gap-1">
+                                    <Spinner/>
+                                    <p>Loading...</p>
+                                </div>
+                            ) : 'Done'}
+                        </button>
+                    </div>
+                    {isLoading && (
+                        <div className="flex flex-col items-center">
                             <Spinner/>
-                            <p>Loading...</p>
                         </div>
-                    ) : 'Done'}
-                </button>
-            </div>
-            {isLoading && (
-                <div className="flex flex-col items-center">
-                    <Spinner/>
+                    )}
+                    {habits && habits.map((habit) =>
+                        <HabitCard 
+                            key={habit._id}
+                            habit={habit} 
+                            isHidden={isHidden} 
+                            markAsFinished={markAsFinished} 
+                            unmarkedAsFinished={unmarkedAsFinished}
+                        />
+                    )}
+                    {error && (
+                        <ErrorMessage error={error}/>
+                    )}
+
+                    {postError && (
+                        <ErrorMessage error={postError}/>
+                    )}
+
+                    <div className="flex justify-center mt-4">
+                        <button 
+                            className={isLoading ? 'btn-disabled': 'btn'} 
+                            disabled={isLoading} 
+                            onClick={loadHabit}
+                        >
+                            {isLoading ? (
+                                <div className="flex gap-1">
+                                    <Spinner/>
+                                    <p>Loading...</p>
+                                </div>
+                            ) : 'Load More'}
+                        </button>
+                    </div>
+                </div> ) : (
+                <div className="text-center mt-5 mb-3">
+                    <h3 className="font-semibold tracking-wide">Good Job!</h3>
+                    <p className="font-light">You finished your habits today!</p>
                 </div>
             )}
-            {habits && habits.map((habit) =>
-                <HabitCard 
-                    key={habit._id}
-                    habit={habit} 
-                    isHidden={isHidden} 
-                    markAsFinished={markAsFinished} 
-                    unmarkedAsFinished={unmarkedAsFinished}
-                />
-            )}
-            {error && (
-                <ErrorMessage error={error}/>
-            )}
-
-            {postError && (
-                <ErrorMessage error={postError}/>
-            )}
-
-            <div className="flex justify-center mt-4">
-                <button 
-                    className={isLoading ? 'btn-disabled': 'btn'} 
-                    disabled={isLoading} 
-                    onClick={loadHabit}
-                >
-                    {isLoading ? (
-                        <div className="flex gap-1">
-                            <Spinner/>
-                            <p>Loading...</p>
-                        </div>
-                    ) : 'Load More'}
-                </button>
-            </div>
         </div>
      );
 }
